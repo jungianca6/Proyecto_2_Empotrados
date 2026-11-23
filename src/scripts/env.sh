@@ -31,7 +31,7 @@ fi
 
 export ALTERA_ROOT
 export QUARTUS_ROOTDIR="$ALTERA_ROOT/quartus"
-export LD_LIBRARY_PATH="$QUARTUS_ROOTDIR/linux64:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$QUARTUS_ROOTDIR/linux64:${LD_LIBRARY_PATH:-}"
 
 # ------------------------------------------------------------
 # PATH
@@ -66,7 +66,6 @@ unset _qt_paths
 # ------------------------------------------------------------
 
 : "${SALT_LICENSE_SERVER:=$HOME/.altera.quartus/questa_lic.dat}"
-
 export SALT_LICENSE_SERVER
 
 # ------------------------------------------------------------

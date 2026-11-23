@@ -6,7 +6,7 @@
    version="1.0"
    description=""
    tags=""
-   categories="" />
+   categories="System" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
    element CLK
@@ -145,9 +145,9 @@
 }
 ]]></parameter>
  <parameter name="clockCrossingAdapter" value="HANDSHAKE" />
- <parameter name="device" value="5CEBA2F17A7" />
+ <parameter name="device" value="5CSEMA5F31C6" />
  <parameter name="deviceFamily" value="Cyclone V" />
- <parameter name="deviceSpeedGrade" value="7" />
+ <parameter name="deviceSpeedGrade" value="6" />
  <parameter name="fabricMode" value="QSYS" />
  <parameter name="generateLegacySim" value="false" />
  <parameter name="generationId" value="0" />
@@ -210,8 +210,8 @@
  <module name="NIOSV" kind="intel_niosv_m" version="26.0.0" enabled="1">
   <parameter name="AUTO_CLK_CLOCK_DOMAIN" value="1" />
   <parameter name="AUTO_CLK_RESET_DOMAIN" value="1" />
-  <parameter name="AUTO_DEVICE" value="5CEBA2F17A7" />
-  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="7" />
+  <parameter name="AUTO_DEVICE" value="5CSEMA5F31C6" />
+  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
   <parameter name="AUTO_PLATFORM_IRQ_RX_INTERRUPTS_USED" value="0" />
   <parameter name="clockFrequency" value="50000000" />
   <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='RAM.s1' start='0x0' end='0x10000' type='altera_avalon_onchip_memory2.s1' /><slave name='NIOSV.dm_agent' start='0x10000' end='0x20000' type='intel_niosv_m.dm_agent' /><slave name='NIOSV.timer_sw_agent' start='0x20000' end='0x20040' type='intel_niosv_m.timer_sw_agent' /><slave name='REG_LEDS.s1' start='0x20040' end='0x20050' type='altera_avalon_pio.s1' /><slave name='REG_HEX.s1' start='0x20050' end='0x20060' type='altera_avalon_pio.s1' /><slave name='REG_SW.s1' start='0x20060' end='0x20070' type='altera_avalon_pio.s1' /><slave name='REG_BTN.s1' start='0x20070' end='0x20080' type='altera_avalon_pio.s1' /><slave name='JTAG.avalon_jtag_slave' start='0x20080' end='0x20088' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></parameter>
