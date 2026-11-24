@@ -1,0 +1,107 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 2025  Altera Corporation. All rights reserved.
+# Your use of Altera Corporation's design tools, logic functions
+# and other software and tools, and any partner logic
+# functions, and any output files from any of the foregoing
+# (including device programming or simulation files), and any
+# associated documentation or information are expressly subject
+# to the terms and conditions of the Altera Program License
+# Subscription Agreement, the Altera Quartus Prime License Agreement,
+# the Altera IP License Agreement, or other applicable license
+# agreement, including, without limitation, that your use is for
+# the sole purpose of programming logic devices manufactured by
+# Altera and sold by Altera or its authorized distributors.  Please
+# refer to the Altera Software License Subscription Agreements
+# on the Quartus Prime software download page.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus Prime
+# Version 25.1std.0 Build 1129 10/21/2025 SC Lite Edition
+# Date created = 15:36:39  November 22, 2026
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		de1_soc_audio_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Intel recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus Prime software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "Cyclone V"
+set_global_assignment -name DEVICE 5CSEMA5F31C6
+set_global_assignment -name TOP_LEVEL_ENTITY de1_soc_top
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 25.1STD.0
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "15:36:39  NOVEMBER 22, 2026"
+set_global_assignment -name LAST_QUARTUS_VERSION "25.1std.0 Lite Edition"
+set_global_assignment -name VERILOG_FILE ../de1_soc_top.v
+set_global_assignment -name QIP_FILE ../gen/synthesis/firstSystem.qip
+set_global_assignment -name SDC_FILE ../de1_soc_top.sdc
+set_location_assignment PIN_AF14 -to CLOCK_50
+set_location_assignment PIN_AA14 -to KEY[0]
+set_location_assignment PIN_AA15 -to KEY[1]
+set_location_assignment PIN_W15 -to KEY[2]
+set_location_assignment PIN_Y16 -to KEY[3]
+set_location_assignment PIN_AB12 -to SW[0]
+set_location_assignment PIN_AC12 -to SW[1]
+set_location_assignment PIN_AF9 -to SW[2]
+set_location_assignment PIN_AF10 -to SW[3]
+set_location_assignment PIN_AD11 -to SW[4]
+set_location_assignment PIN_AD12 -to SW[5]
+set_location_assignment PIN_AE11 -to SW[6]
+set_location_assignment PIN_AC9 -to SW[7]
+set_location_assignment PIN_AD10 -to SW[8]
+set_location_assignment PIN_AE12 -to SW[9]
+set_location_assignment PIN_V16 -to LEDR[0]
+set_location_assignment PIN_W16 -to LEDR[1]
+set_location_assignment PIN_V17 -to LEDR[2]
+set_location_assignment PIN_V18 -to LEDR[3]
+set_location_assignment PIN_W17 -to LEDR[4]
+set_location_assignment PIN_W19 -to LEDR[5]
+set_location_assignment PIN_Y19 -to LEDR[6]
+set_location_assignment PIN_W20 -to LEDR[7]
+set_location_assignment PIN_W21 -to LEDR[8]
+set_location_assignment PIN_Y21 -to LEDR[9]
+set_location_assignment PIN_AE26 -to HEX[0]
+set_location_assignment PIN_AE27 -to HEX[1]
+set_location_assignment PIN_AE28 -to HEX[2]
+set_location_assignment PIN_AG27 -to HEX[3]
+set_location_assignment PIN_AF28 -to HEX[4]
+set_location_assignment PIN_AG28 -to HEX[5]
+set_location_assignment PIN_AH28 -to HEX[6]
+set_location_assignment PIN_AJ29 -to HEX[7]
+set_location_assignment PIN_AH29 -to HEX[8]
+set_location_assignment PIN_AH30 -to HEX[9]
+set_location_assignment PIN_AG30 -to HEX[10]
+set_location_assignment PIN_AF29 -to HEX[11]
+set_location_assignment PIN_AF30 -to HEX[12]
+set_location_assignment PIN_AD27 -to HEX[13]
+set_location_assignment PIN_AB23 -to HEX[14]
+set_location_assignment PIN_AE29 -to HEX[15]
+set_location_assignment PIN_AD29 -to HEX[16]
+set_location_assignment PIN_AC28 -to HEX[17]
+set_location_assignment PIN_AD30 -to HEX[18]
+set_location_assignment PIN_AC29 -to HEX[19]
+set_location_assignment PIN_AC30 -to HEX[20]
+set_location_assignment PIN_AD26 -to HEX[21]
+set_location_assignment PIN_AC27 -to HEX[22]
+set_location_assignment PIN_AD25 -to HEX[23]
+set_location_assignment PIN_AC25 -to HEX[24]
+set_location_assignment PIN_AB28 -to HEX[25]
+set_location_assignment PIN_AB25 -to HEX[26]
+set_location_assignment PIN_AB22 -to HEX[27]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to CLOCK_50
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[*]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to SW[*]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDR[*]
+# Estandar electrico para los displays HEX0-HEX3
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX[*]

@@ -16,10 +16,17 @@ cd "$HERE/hw"
 # qsys-script --script=build_system.tcl
 
 echo ">> Generando RTL de sintesis + .sopcinfo ..."
-qsys-generate hello.qsys --synthesis=VERILOG     --output-directory="$HERE/hw/gen"
+qsys-generate firstSystem.qsys --synthesis=VERILOG \
+  --output-directory="$HERE/hw/gen" \
+  --family="Cyclone V" \
+  --part=5CSEMA5F31C6
 
 echo ">> Generando testbench de simulacion (Verilog) ..."
-qsys-generate hello.qsys --testbench=STANDARD --testbench-simulation=VERILOG \
-              --output-directory="$HERE/hw/gen"
+qsys-generate firstSystem.qsys --testbench=STANDARD \
+  --testbench-simulation=VERILOG \
+  --output-directory="$HERE/hw/gen" \
+  --family="Cyclone V" \
+  --part=5CSEMA5F31C6
 
-echo ">> Listo. .sopcinfo en: $HERE/hw/hello.sopcinfo"
+echo ">> Generacion finalizada."
+echo ">> Archivo esperado: $HERE/hw/firstSystem.sopcinfo"
