@@ -105,3 +105,25 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to SW[*]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDR[*]
 # Estandar electrico para los displays HEX0-HEX3
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX[*]
+set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/filters/ByPassFilter.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/filters/LowPassFilter.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/filters/HighPassFilter.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/filters/BassBoostFilter.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/filters/AudioFilter.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/audio/AudioFilterControlAvalon.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/audio/AudioSampleInputAvalon.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/audio/AudioOutputSerializer.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/audio/ToneGenerator.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/audio/WM8731Config.sv
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to AUD_XCK
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to AUD_BCLK
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to AUD_DACLRCK
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to AUD_DACDAT
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to AUD_I2C_SCLK
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to AUD_I2C_SDAT
+set_location_assignment PIN_G7 -to AUD_XCK
+set_location_assignment PIN_H7 -to AUD_BCLK
+set_location_assignment PIN_H8 -to AUD_DACLRCK
+set_location_assignment PIN_J7 -to AUD_DACDAT
+set_location_assignment PIN_J12 -to AUD_I2C_SCLK
+set_location_assignment PIN_K12 -to AUD_I2C_SDAT

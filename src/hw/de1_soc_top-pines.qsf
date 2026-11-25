@@ -5,6 +5,14 @@
 # ---- Reloj ----
 set_location_assignment PIN_AF14 -to CLOCK_50
 
+# ---- Audio WM8731 ----
+set_location_assignment PIN_G7 -to AUD_XCK
+set_location_assignment PIN_H7 -to AUD_BCLK
+set_location_assignment PIN_H8 -to AUD_DACLRCK
+set_location_assignment PIN_J7 -to AUD_DACDAT
+set_location_assignment PIN_J12 -to AUD_I2C_SCLK
+set_location_assignment PIN_K12 -to AUD_I2C_SDAT
+
 # ---- Botones KEY[3:0] (activos en bajo) ----
 set_location_assignment PIN_AA14 -to KEY[0]
 set_location_assignment PIN_AA15 -to KEY[1]
@@ -67,6 +75,12 @@ set_location_assignment PIN_AB22 -to HEX[27]
 
 # ---- Estandar de E/S ----
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to CLOCK_50
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to AUD_XCK
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to AUD_BCLK
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to AUD_DACLRCK
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to AUD_DACDAT
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to AUD_I2C_SCLK
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to AUD_I2C_SDAT
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[*]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to SW[*]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDR[*]

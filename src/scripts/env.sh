@@ -18,14 +18,14 @@
 # Configuración de la instalación
 # ------------------------------------------------------------
 
-: "${ALTERA_ROOT:=$HOME/altera_lite/25.1std}"
+: "${ALTERA_ROOT:=$HOME/intelFPGA/25.1std}"
 
 if [ ! -d "$ALTERA_ROOT/quartus" ]; then
     echo "ERROR: No encuentro Quartus en:"
     echo "       $ALTERA_ROOT/quartus"
     echo
     echo "Configure ALTERA_ROOT, por ejemplo:"
-    echo "  export ALTERA_ROOT=\$HOME/altera_lite/25.1std"
+    echo "  export ALTERA_ROOT=\$HOME/intelFPGA/25.1std"
     return 1 2>/dev/null || exit 1
 fi
 
