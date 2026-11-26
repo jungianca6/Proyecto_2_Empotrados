@@ -227,3 +227,24 @@ El protocolo contempla comandos, eventos, estados del reproductor y un anillo de
 La imagen Linux de referencia utiliza un kernel de 2014. Su funcionamiento fue validado para el arranque y el acceso básico a archivos, pero todavía no se ha demostrado la compatibilidad completa con el hardware FPGA personalizado.
 
 Este documento registra los procedimientos y resultados de las pruebas realizadas en la tarjeta física DE1-SoC.
+
+## 12. Prueba de rendimiento de lectura desde microSD
+
+Se realizó una medición de lectura sobre el archivo `prueba_44100_estereo.wav` utilizando Linux en el HPS de la tarjeta DE1-SoC.
+
+Para cada ejecución se limpiaron las cachés recuperables del sistema mediante `/proc/sys/vm/drop_caches` y se leyó el archivo con `dd`, utilizando bloques de 4096 bytes.
+
+| Prueba | Tiempo real |
+|---|---|
+| 1 | 0,08 s |
+| 2 | 0,08 s |
+| 3 | 0,08 s |
+| 4 | 0,08 s |
+| 5 | 0,08 s |
+| **Promedio observado** | **0,08 s (80 ms)** |
+
+Las cinco pruebas finalizaron correctamente, leyendo el archivo completo de aproximadamente 172,3 KiB.
+
+Los tiempos corresponden a la operación completa de lectura y no representan directamente la latencia de cada bloque individual. Las mediciones incluyen la ejecución del programa `dd` y están limitadas por la resolución de la herramienta utilizada.
+
+Esta prueba verifica el acceso a los datos almacenados en la microSD y proporciona una medición preliminar del rendimiento de lectura desde el HPS.
