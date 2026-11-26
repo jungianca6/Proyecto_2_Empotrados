@@ -8,12 +8,22 @@
 
 typedef struct {
     FILE *file;
+
+    /* Formato del audio */
     uint32_t sample_rate;
     uint32_t data_bytes;
     uint32_t remaining_bytes;
     uint16_t channels;
     uint16_t bits_per_sample;
     uint32_t total_seconds;
+
+    /* Metadatos LIST/INFO */
+    char title[128];
+    char artist[128];
+    char album[128];
+
+    /* Indica si se encontraron metadatos */
+    int has_metadata;
 } wav_reader_t;
 
 /* Abre y valida un WAV PCM de 16 bits. */

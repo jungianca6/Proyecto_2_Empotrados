@@ -23,6 +23,11 @@ int main(int argc, char **argv) {
     printf("Canales: %u\n", wav.channels);
     printf("Bits: %u\n", wav.bits_per_sample);
     printf("Duracion: %u segundos\n", wav.total_seconds);
+    printf("Titulo: %s\n", wav.title);
+    printf("Artista: %s\n", wav.artist);
+    printf("Album: %s\n", wav.album);
+    printf("Tiene metadatos: %s\n",
+        wav.has_metadata ? "Si" : "No");
 
     while ((n = wav_read_pcm(&wav, buffer, 1024)) > 0) {
         for (size_t i = 0; i < n; i++) {

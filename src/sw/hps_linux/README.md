@@ -248,3 +248,28 @@ Las cinco pruebas finalizaron correctamente, leyendo el archivo completo de apro
 Los tiempos corresponden a la operación completa de lectura y no representan directamente la latencia de cada bloque individual. Las mediciones incluyen la ejecución del programa `dd` y están limitadas por la resolución de la herramienta utilizada.
 
 Esta prueba verifica el acceso a los datos almacenados en la microSD y proporciona una medición preliminar del rendimiento de lectura desde el HPS.
+
+### Parser WAV y metadatos — Issue #14
+
+Se implementó un lector de archivos WAV PCM de 16 bits que admite audio mono y estéreo, con frecuencias de muestreo de 8 kHz, 16 kHz y 44,1 kHz.
+
+El módulo `wav_reader.c` permite:
+
+- Validar el encabezado RIFF/WAVE y el formato PCM.
+- Obtener la frecuencia de muestreo, cantidad de canales y duración de la canción.
+- Extraer título (`INAM`), artista (`IART`) y álbum (`IPRD`) desde chunks `LIST/INFO`, ubicados antes o después del bloque de audio.
+- Convertir muestras de audio en palabras PCM estéreo de 32 bits, duplicando el canal cuando la fuente es mono.
+
+**Convención para archivos sin metadatos:**
+
+- Título: nombre del archivo sin la extensión `.wav`.
+- Artista: `Desconocido`.
+- Álbum: `Desconocido`.
+
+**Pruebas realizadas en Ubuntu:**
+
+Se verificó la lectura de WAV de 8 kHz mono, 16 kHz estéreo y 44,1 kHz estéreo. También se probaron archivos con metadatos antes y después del audio, y archivos sin metadatos.
+
+Todas las pruebas ejecutadas finalizaron correctamente. Se comprobó, además, la interpretación de muestras PCM con valores positivos y negativos en ambos canales.
+
+**Pendiente de integración:** validar el lector en Linux ARM sobre el HPS de la DE1-SoC y realizar pruebas con archivos WAV adicionales.
