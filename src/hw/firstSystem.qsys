@@ -255,7 +255,7 @@
    version="25.1"
    enabled="1">
   <parameter name="allowInSystemMemoryContentEditor" value="false" />
-  <parameter name="autoInitializationFileName">firstSystem_CTRL_RAM</parameter>
+  <parameter name="autoInitializationFileName">$${FILENAME}_CTRL_RAM</parameter>
   <parameter name="blockType" value="AUTO" />
   <parameter name="copyInitFile" value="false" />
   <parameter name="dataWidth" value="32" />
@@ -302,7 +302,7 @@
   <parameter name="AUTO_CLK_RESET_DOMAIN" value="1" />
   <parameter name="AUTO_DEVICE" value="5CSEMA5F31C6" />
   <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
-  <parameter name="AUTO_PLATFORM_IRQ_RX_INTERRUPTS_USED" value="0" />
+  <parameter name="AUTO_PLATFORM_IRQ_RX_INTERRUPTS_USED" value="3" />
   <parameter name="clockFrequency" value="50000000" />
   <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='RAM.s1' start='0x0' end='0x10000' type='altera_avalon_onchip_memory2.s1' /><slave name='NIOSV.dm_agent' start='0x10000' end='0x20000' type='intel_niosv_m.dm_agent' /><slave name='NIOSV.timer_sw_agent' start='0x20000' end='0x20040' type='intel_niosv_m.timer_sw_agent' /><slave name='REG_LEDS.s1' start='0x20040' end='0x20050' type='altera_avalon_pio.s1' /><slave name='REG_HEX.s1' start='0x20050' end='0x20060' type='altera_avalon_pio.s1' /><slave name='REG_SW.s1' start='0x20060' end='0x20070' type='altera_avalon_pio.s1' /><slave name='REG_BTN.s1' start='0x20070' end='0x20080' type='altera_avalon_pio.s1' /><slave name='JTAG.avalon_jtag_slave' start='0x20080' end='0x20088' type='altera_avalon_jtag_uart.avalon_jtag_slave' /><slave name='CTRL_RAM.s1' start='0x30000' end='0x31000' type='altera_avalon_onchip_memory2.s1' /><slave name='PCM_RAM.s1' start='0x40000' end='0x50000' type='altera_avalon_onchip_memory2.s1' /></address-map>]]></parameter>
   <parameter name="deviceFamily" value="Cyclone V" />
@@ -326,7 +326,7 @@
    version="25.1"
    enabled="1">
   <parameter name="allowInSystemMemoryContentEditor" value="false" />
-  <parameter name="autoInitializationFileName" value="firstSystem_PCM_RAM" />
+  <parameter name="autoInitializationFileName">$${FILENAME}_PCM_RAM</parameter>
   <parameter name="blockType" value="AUTO" />
   <parameter name="copyInitFile" value="false" />
   <parameter name="dataWidth" value="32" />
@@ -358,7 +358,7 @@
    version="25.1"
    enabled="1">
   <parameter name="allowInSystemMemoryContentEditor" value="false" />
-  <parameter name="autoInitializationFileName" value="firstSystem_RAM" />
+  <parameter name="autoInitializationFileName" value="$${FILENAME}_RAM" />
   <parameter name="blockType" value="AUTO" />
   <parameter name="copyInitFile" value="false" />
   <parameter name="dataWidth" value="32" />
@@ -387,11 +387,11 @@
  <module name="REG_BTN" kind="altera_avalon_pio" version="25.1" enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="false" />
   <parameter name="bitModifyingOutReg" value="false" />
-  <parameter name="captureEdge" value="false" />
+  <parameter name="captureEdge" value="true" />
   <parameter name="clockRate" value="50000000" />
   <parameter name="direction" value="Input" />
-  <parameter name="edgeType" value="RISING" />
-  <parameter name="generateIRQ" value="false" />
+  <parameter name="edgeType" value="FALLING" />
+  <parameter name="generateIRQ" value="true" />
   <parameter name="irqType" value="LEVEL" />
   <parameter name="resetValue" value="0" />
   <parameter name="simDoTestBenchWiring" value="false" />
@@ -433,7 +433,7 @@
   <parameter name="clockRate" value="50000000" />
   <parameter name="direction" value="Input" />
   <parameter name="edgeType" value="RISING" />
-  <parameter name="generateIRQ" value="false" />
+  <parameter name="generateIRQ" value="true" />
   <parameter name="irqType" value="LEVEL" />
   <parameter name="resetValue" value="0" />
   <parameter name="simDoTestBenchWiring" value="false" />
@@ -1108,6 +1108,20 @@
    version="25.1"
    start="CLK.clk"
    end="hps_0.h2f_lw_axi_clock" />
+ <connection
+   kind="interrupt"
+   version="25.1"
+   start="NIOSV.platform_irq_rx"
+   end="REG_BTN.irq">
+  <parameter name="irqNumber" value="0" />
+ </connection>
+ <connection
+   kind="interrupt"
+   version="25.1"
+   start="NIOSV.platform_irq_rx"
+   end="REG_SW.irq">
+  <parameter name="irqNumber" value="1" />
+ </connection>
  <connection kind="reset" version="25.1" start="CLK.clk_reset" end="NIOSV.reset" />
  <connection kind="reset" version="25.1" start="CLK.clk_reset" end="REG_BTN.reset" />
  <connection kind="reset" version="25.1" start="CLK.clk_reset" end="REG_SW.reset" />
