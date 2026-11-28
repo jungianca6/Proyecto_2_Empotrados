@@ -94,14 +94,18 @@ module de1_soc_top (
         .audio_clk_clk      (audio_clk),
         .reset_source_reset (audio_reset)
     );
-    wire [1:0] filter_sel = SW[1:0];
     wire sample_req;
-    wire tone_valid;
-    wire signed [15:0] tone_sample;
-    wire signed [15:0] filtered_sample;
-    wire filtered_valid;
+    wire [15:0] dsp_left;
+    wire [15:0] dsp_right;
 
-
+    // sample_valid llega 8 ciclos de audio_clk despues de sample_req,
+    // cuando las salidas de audio_dsp (dominio de 50 MHz) ya estan estables.
+    reg [7:0] req_delay;
+    always @(posedge audio_clk or negedge audio_rst_n) begin
+        if (!audio_rst_n) req_delay <= 8'd0;
+        else              req_delay <= {req_delay[6:0], sample_req};
+    end
+    wire sample_valid = req_delay[7];
 
     firstSystem soc (
         .clk_clk       (CLOCK_50),
@@ -110,6 +114,9 @@ module de1_soc_top (
         .sw_export     (SW),
         .leds_export   (LEDR),
         .hex_export    (hex_data),
+        .dsp_sample_req (sample_req),
+        .dsp_left       (dsp_left),
+        .dsp_right      (dsp_right),
         .hps_io_hps_io_emac1_inst_TX_CLK (hps_io_hps_io_emac1_inst_TX_CLK),
         .hps_io_hps_io_emac1_inst_TXD0 (hps_io_hps_io_emac1_inst_TXD0),
         .hps_io_hps_io_emac1_inst_TXD1 (hps_io_hps_io_emac1_inst_TXD1),
@@ -191,24 +198,11 @@ module de1_soc_top (
         .AUD_I2C_SDAT(AUD_I2C_SDAT)
     );
 
-    ToneGenerator tone (
-        .clk(audio_clk), .rst_n(audio_rst_n),
-        .sample_req(sample_req),
-        .sample_out(tone_sample), .sample_valid(tone_valid)
-    );
-
-    AudioFilter dsp (
-        .clk(audio_clk), .rst_n(audio_rst_n),
-        .filter_sel(filter_sel),
-        .sample_valid(tone_valid), .sample_in(tone_sample),
-        .sample_out(filtered_sample), .out_valid(filtered_valid)
-    );
-
     AudioOutputSerializer audio_out (
         .audio_clk(audio_clk), .rst_n(audio_rst_n),
-        .sample_left(filtered_sample),
-        .sample_right(filtered_sample),
-        .sample_valid(filtered_valid),
+        .sample_left(dsp_left),
+        .sample_right(dsp_right),
+        .sample_valid(sample_valid),
         .sample_req(sample_req),
         .AUD_BCLK(AUD_BCLK), .AUD_LRCK(AUD_DACLRCK),
         .AUD_DACDAT(AUD_DACDAT), .AUD_XCK()
