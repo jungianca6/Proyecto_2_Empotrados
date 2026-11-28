@@ -41,6 +41,22 @@
          type = "boolean";
       }
    }
+   element DSP
+   {
+      datum _sortIndex
+      {
+         value = "11";
+         type = "int";
+      }
+   }
+   element DSP.csr
+   {
+      datum _lockedAddress
+      {
+         value = "1";
+         type = "boolean";
+      }
+   }
    element JTAG
    {
       datum _sortIndex
@@ -225,6 +241,7 @@
    type="conduit"
    dir="end" />
  <interface name="clk" internal="CLK.clk_in" type="clock" dir="end" />
+ <interface name="dsp" internal="DSP.audio" type="conduit" dir="end" />
  <interface
    name="hex"
    internal="REG_HEX.external_connection"
@@ -255,7 +272,7 @@
    version="25.1"
    enabled="1">
   <parameter name="allowInSystemMemoryContentEditor" value="false" />
-  <parameter name="autoInitializationFileName">$${FILENAME}_CTRL_RAM</parameter>
+  <parameter name="autoInitializationFileName">firstSystem_CTRL_RAM</parameter>
   <parameter name="blockType" value="AUTO" />
   <parameter name="copyInitFile" value="false" />
   <parameter name="dataWidth" value="32" />
@@ -281,6 +298,7 @@
   <parameter name="useShallowMemBlocks" value="false" />
   <parameter name="writable" value="true" />
  </module>
+ <module name="DSP" kind="audio_dsp" version="1.0" enabled="1" />
  <module name="JTAG" kind="altera_avalon_jtag_uart" version="25.1" enabled="1">
   <parameter name="allowMultipleConnections" value="false" />
   <parameter name="avalonSpec" value="2.0" />
@@ -304,7 +322,7 @@
   <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
   <parameter name="AUTO_PLATFORM_IRQ_RX_INTERRUPTS_USED" value="3" />
   <parameter name="clockFrequency" value="50000000" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='RAM.s1' start='0x0' end='0x10000' type='altera_avalon_onchip_memory2.s1' /><slave name='NIOSV.dm_agent' start='0x10000' end='0x20000' type='intel_niosv_m.dm_agent' /><slave name='NIOSV.timer_sw_agent' start='0x20000' end='0x20040' type='intel_niosv_m.timer_sw_agent' /><slave name='REG_LEDS.s1' start='0x20040' end='0x20050' type='altera_avalon_pio.s1' /><slave name='REG_HEX.s1' start='0x20050' end='0x20060' type='altera_avalon_pio.s1' /><slave name='REG_SW.s1' start='0x20060' end='0x20070' type='altera_avalon_pio.s1' /><slave name='REG_BTN.s1' start='0x20070' end='0x20080' type='altera_avalon_pio.s1' /><slave name='JTAG.avalon_jtag_slave' start='0x20080' end='0x20088' type='altera_avalon_jtag_uart.avalon_jtag_slave' /><slave name='CTRL_RAM.s1' start='0x30000' end='0x31000' type='altera_avalon_onchip_memory2.s1' /><slave name='PCM_RAM.s1' start='0x40000' end='0x50000' type='altera_avalon_onchip_memory2.s1' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='RAM.s1' start='0x0' end='0x10000' type='altera_avalon_onchip_memory2.s1' /><slave name='NIOSV.dm_agent' start='0x10000' end='0x20000' type='intel_niosv_m.dm_agent' /><slave name='NIOSV.timer_sw_agent' start='0x20000' end='0x20040' type='intel_niosv_m.timer_sw_agent' /><slave name='REG_LEDS.s1' start='0x20040' end='0x20050' type='altera_avalon_pio.s1' /><slave name='REG_HEX.s1' start='0x20050' end='0x20060' type='altera_avalon_pio.s1' /><slave name='REG_SW.s1' start='0x20060' end='0x20070' type='altera_avalon_pio.s1' /><slave name='REG_BTN.s1' start='0x20070' end='0x20080' type='altera_avalon_pio.s1' /><slave name='JTAG.avalon_jtag_slave' start='0x20080' end='0x20088' type='altera_avalon_jtag_uart.avalon_jtag_slave' /><slave name='DSP.csr' start='0x20100' end='0x20140' type='audio_dsp.csr' /><slave name='CTRL_RAM.s1' start='0x30000' end='0x31000' type='altera_avalon_onchip_memory2.s1' /><slave name='PCM_RAM.s1' start='0x40000' end='0x50000' type='altera_avalon_onchip_memory2.s1' /></address-map>]]></parameter>
   <parameter name="deviceFamily" value="Cyclone V" />
   <parameter name="enableAvalonInterface" value="false" />
   <parameter name="enableDebug" value="true" />
@@ -326,7 +344,7 @@
    version="25.1"
    enabled="1">
   <parameter name="allowInSystemMemoryContentEditor" value="false" />
-  <parameter name="autoInitializationFileName">$${FILENAME}_PCM_RAM</parameter>
+  <parameter name="autoInitializationFileName" value="firstSystem_PCM_RAM" />
   <parameter name="blockType" value="AUTO" />
   <parameter name="copyInitFile" value="false" />
   <parameter name="dataWidth" value="32" />
@@ -358,7 +376,7 @@
    version="25.1"
    enabled="1">
   <parameter name="allowInSystemMemoryContentEditor" value="false" />
-  <parameter name="autoInitializationFileName" value="$${FILENAME}_RAM" />
+  <parameter name="autoInitializationFileName" value="firstSystem_RAM" />
   <parameter name="blockType" value="AUTO" />
   <parameter name="copyInitFile" value="false" />
   <parameter name="dataWidth" value="32" />
@@ -979,6 +997,11 @@
   <parameter name="baseAddress" value="0x00020080" />
   <parameter name="defaultConnection" value="false" />
  </connection>
+ <connection kind="avalon" version="25.1" start="NIOSV.data_manager" end="DSP.csr">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00020100" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
  <connection
    kind="avalon"
    version="25.1"
@@ -1092,6 +1115,11 @@
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
+ <connection kind="avalon" version="25.1" start="DSP.pcm" end="PCM_RAM.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
  <connection kind="clock" version="25.1" start="CLK.clk" end="NIOSV.clk" />
  <connection kind="clock" version="25.1" start="CLK.clk" end="REG_BTN.clk" />
  <connection kind="clock" version="25.1" start="CLK.clk" end="REG_SW.clk" />
@@ -1103,6 +1131,7 @@
  <connection kind="clock" version="25.1" start="CLK.clk" end="PCM_RAM.clk1" />
  <connection kind="clock" version="25.1" start="CLK.clk" end="CTRL_RAM.clk2" />
  <connection kind="clock" version="25.1" start="CLK.clk" end="PCM_RAM.clk2" />
+ <connection kind="clock" version="25.1" start="CLK.clk" end="DSP.clock" />
  <connection
    kind="clock"
    version="25.1"
@@ -1132,6 +1161,7 @@
    start="CLK.clk_reset"
    end="REG_LEDS.reset" />
  <connection kind="reset" version="25.1" start="CLK.clk_reset" end="JTAG.reset" />
+ <connection kind="reset" version="25.1" start="CLK.clk_reset" end="DSP.reset" />
  <connection kind="reset" version="25.1" start="CLK.clk_reset" end="RAM.reset1" />
  <connection
    kind="reset"
