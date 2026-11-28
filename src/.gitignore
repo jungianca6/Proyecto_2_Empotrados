@@ -618,3 +618,7 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+
+# Generados por Quartus (HPS)
+hw/quartus_build/hps_isw_handoff/
+hw/quartus_build/hps_sdram_p0_summary.csv
