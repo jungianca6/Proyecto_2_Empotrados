@@ -1,56 +1,68 @@
 module AudioOutputSerializer (
-    input  logic        audio_clk,
-    input  logic        rst_n,
+    input  logic audio_clk,
+    input  logic rst_n,
     input  logic signed [15:0] sample_left,
     input  logic signed [15:0] sample_right,
-    input  logic        sample_valid,
-    output logic        sample_req,
-    output logic        AUD_BCLK,
-    output logic        AUD_LRCK,
-    output logic        AUD_DACDAT,
-    output logic        AUD_XCK
+    input  logic sample_valid,
+    output logic sample_req,
+    output logic AUD_BCLK,
+    output logic AUD_LRCK,
+    output logic AUD_DACDAT,
+    output logic AUD_XCK
 );
+
     logic [7:0] frame_cnt;
-    logic [15:0] shift_left, shift_right;
+    logic [15:0] pending_left, pending_right;
+    logic [15:0] active_left, active_right;
 
-    assign AUD_XCK = 1'b0;
-
-    always_comb begin
-        AUD_BCLK = frame_cnt[3];
-        AUD_LRCK = frame_cnt[7];
-    end
+    // 12.288 MHz / 256 = 48 kHz
+    // 12.288 MHz / 4 = 3.072 MHz (64 BCLK por trama)
+    assign AUD_BCLK = frame_cnt[1];
+    assign AUD_LRCK = frame_cnt[7];
+    assign AUD_XCK = audio_clk;
 
     always_ff @(posedge audio_clk or negedge rst_n) begin
         if (!rst_n) begin
-            frame_cnt <= 8'd0;
-            shift_left <= 16'd0;
-            shift_right <= 16'd0;
-            AUD_DACDAT <= 1'b0;
-            sample_req <= 1'b0;
+            frame_cnt     <= 8'd0;
+            pending_left  <= 16'd0;
+            pending_right <= 16'd0;
+            active_left   <= 16'd0;
+            active_right  <= 16'd0;
+            sample_req    <= 1'b0;
+            AUD_DACDAT    <= 1'b0;
         end else begin
             frame_cnt <= frame_cnt + 8'd1;
-            sample_req <= 1'b0;
 
+            // Solicitar la siguiente muestra antes de la trama
+            sample_req <= (frame_cnt == 8'd224);
+
+            // Almacenar la respuesta del generador/filtro
+            if (sample_valid) begin
+                pending_left  <= sample_left;
+                pending_right <= sample_right;
+            end
+
+            // Fijar las muestras para toda la trama
             if (frame_cnt == 8'd0) begin
-                if (sample_valid) begin
-                    shift_left <= sample_left;
-                    shift_right <= sample_right;
-                    sample_req <= 1'b1;
-                end
+                active_left  <= pending_left;
+                active_right <= pending_right;
             end
 
-            if (frame_cnt[2:0] == 3'b111) begin
-                if (frame_cnt[7] == 1'b0)
-                    AUD_DACDAT <= shift_left[15];
-                else
-                    AUD_DACDAT <= shift_right[15];
-            end
+            // Datos actualizados en fase baja de BCLK.
+            // I2S: MSB un periodo de BCLK despues de LRCK.
+            if (frame_cnt[1:0] == 2'b00) begin
+                if (frame_cnt >= 8'd4 &&
+                    frame_cnt <= 8'd64)
+                    AUD_DACDAT <=
+                        active_left[16 - frame_cnt[6:2]];
 
-            if (frame_cnt[2:0] == 3'b111) begin
-                if (frame_cnt[7] == 1'b0)
-                    shift_left <= {shift_left[14:0], 1'b0};
+                else if (frame_cnt >= 8'd132 &&
+                         frame_cnt <= 8'd192)
+                    AUD_DACDAT <=
+                        active_right[15 - ((frame_cnt - 8'd132) >> 2)];
+
                 else
-                    shift_right <= {shift_right[14:0], 1'b0};
+                    AUD_DACDAT <= 1'b0;
             end
         end
     end

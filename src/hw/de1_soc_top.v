@@ -13,9 +13,16 @@ module de1_soc_top (
 );
 
     wire [31:0] hex_data;
-    reg  aud_xck_reg;
+    wire audio_clk;
+    wire audio_reset;
+    wire audio_rst_n = KEY[0] & ~audio_reset;
 
-    wire audio_clk = aud_xck_reg;
+    audio_pll pll_inst (
+        .ref_clk_clk        (CLOCK_50),
+        .ref_reset_reset    (~KEY[0]),
+        .audio_clk_clk      (audio_clk),
+        .reset_source_reset (audio_reset)
+    );
     wire [1:0] filter_sel = SW[1:0];
     wire sample_req;
     wire tone_valid;
@@ -23,10 +30,7 @@ module de1_soc_top (
     wire signed [15:0] filtered_sample;
     wire filtered_valid;
 
-    always @(posedge CLOCK_50) begin
-        if (!KEY[0]) aud_xck_reg <= 1'b0;
-        else aud_xck_reg <= ~aud_xck_reg;
-    end
+
 
     firstSystem soc (
         .clk_clk       (CLOCK_50),
@@ -46,20 +50,20 @@ module de1_soc_top (
     );
 
     ToneGenerator tone (
-        .clk(audio_clk), .rst_n(KEY[0]),
+        .clk(audio_clk), .rst_n(audio_rst_n),
         .sample_req(sample_req),
         .sample_out(tone_sample), .sample_valid(tone_valid)
     );
 
     AudioFilter dsp (
-        .clk(audio_clk), .rst_n(KEY[0]),
+        .clk(audio_clk), .rst_n(audio_rst_n),
         .filter_sel(filter_sel),
         .sample_valid(tone_valid), .sample_in(tone_sample),
         .sample_out(filtered_sample), .out_valid(filtered_valid)
     );
 
     AudioOutputSerializer audio_out (
-        .audio_clk(audio_clk), .rst_n(KEY[0]),
+        .audio_clk(audio_clk), .rst_n(audio_rst_n),
         .sample_left(filtered_sample),
         .sample_right(filtered_sample),
         .sample_valid(filtered_valid),
@@ -68,5 +72,5 @@ module de1_soc_top (
         .AUD_DACDAT(AUD_DACDAT), .AUD_XCK()
     );
 
-    assign AUD_XCK = aud_xck_reg;
+    assign AUD_XCK = audio_clk;
 endmodule
