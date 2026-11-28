@@ -601,3 +601,7 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+
+# Pruebas locales del software HPS
+/src/sw/hps_linux/wav_catalog
+/pruebas_wav/
