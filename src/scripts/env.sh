@@ -18,7 +18,14 @@
 # Configuración de la instalación
 # ------------------------------------------------------------
 
-: "${ALTERA_ROOT:=$HOME/intelFPGA/25.1std}"
+# Usa ALTERA_ROOT si ya existe; si no, busca las rutas usadas por el equipo.
+if [ -z "${ALTERA_ROOT:-}" ]; then
+    for _r in "$HOME/altera_lite/25.1std" "$HOME/intelFPGA/25.1std"; do
+        if [ -d "$_r/quartus" ]; then ALTERA_ROOT="$_r"; break; fi
+    done
+    unset _r
+fi
+: "${ALTERA_ROOT:=$HOME/altera_lite/25.1std}"
 
 if [ ! -d "$ALTERA_ROOT/quartus" ]; then
     echo "ERROR: No encuentro Quartus en:"
